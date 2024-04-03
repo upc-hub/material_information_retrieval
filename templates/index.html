@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material Science Information Retrieval</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-RTSyXETtaZLmr2KV9T2dX7IBo6u1/V+fXsK9C1XoK9ILbpOXZrlVDhNTJv60ZsUQ2vGW1EV2qMCZPUF7VzU5kg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            background-color: #008080; /* Light gray background  #808000 */
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .column {
+            width: 75%; /* Adjust the width as needed */
+            margin-bottom: 20px;
+        }
+        .column1 {
+            width: 23%; /* Adjust the width as needed */
+            margin-bottom: 20px;
+        }
+        .pdf-files, .web-urls{
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+        }
+        
+        .file-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .file-item {
+            padding: 10px;
+            margin: 5px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        .file-item:hover {
+            background-color: #008080; /* Change to the desired background color #ccc*/
+            color: #fff;
+        }
+        
+        .file-item1 {
+            padding: 10px;
+            margin: 5px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .file-item1:hover {
+            background-color: #008080; /* Change to the desired background color #ccc */
+            color: #fff;
+        }
+
+        .file-link {
+            text-decoration: none;
+            color: #333;
+            display: block;
+            text-align: center;
+        }
+        
+        .file-link:hover {
+            color: #fff; /* Change to the desired color #008080 */
+        }
+        
+        .pdf-icon {
+            width: 100px;
+            height: 100px;
+            background-size: cover;
+            background-position: center;
+            margin-bottom: 5px;
+        }
+        .topics {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+        }
+        
+        .topics ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        
+        .topics li {
+            margin-right: 5px;
+            margin-bottom: 30px; /* Add margin bottom to create space between rows */
+        }
+        
+        
+        .topic-link {
+            text-decoration: none;
+            color: #008080;
+            padding: 8px 12px;
+            border: 1px solid #008080;
+            border-radius: 20px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .topic-link:hover {
+            background-color: #008080;
+            color: #fff;
+        }   
+        
+        .search-form {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .search-input {
+            padding: 10px;
+            width: 60%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        
+        .search-button {
+            padding: 10px 20px;
+            background-color: #008080 ;
+            border: none;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .search-button:hover {
+            background-color: #0056b3;
+        }
+        .url {
+            display: block;
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 5px;
+            font-size: 14px; /* Adjust font size as needed */
+        }
+        
+    </style>
+    
+    <script>
+        function getThumbnailUrl(topic, filename) {
+            return `/static/thumbnails/${filename}.png`;
+        }
+    </script>
+</head>
+<body>
+    <h1 style="text-align: center; color: white; font-size: 36px; margin-top: 10px;margin-bottom: -20px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); text-decoration: underline;">Material Science-related Information Retrieval System</h1>
+    
+    <h2 style="color: white; margin-bottom:5px; text-decoration: underline;">Search</h2>
+    <div class="search-form">
+        <form action="/" method="post">
+            <input type="text" name="query" placeholder="Enter your query" class="search-input">
+            <button type="submit" class="search-button"><i class="fas fa-search"></i>Search</button>
+
+
+        </form>
+    </div>
+
+    <h2 style="color: white; margin-bottom:5px; text-decoration: underline;">Topics</h2>
+<div class="topics">
+    <ul>
+        {% for topic in topics %}
+            <li><a href="{{ url_for('topic_files', topic=topic) }}" class="topic-link">{{ topic }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div class="container">
+    <div class="column">    
+<h2 style="color: white; margin-bottom:5px; text-decoration: underline;">Literature</h2>
+<div class="pdf-files">
+    <ul class="file-list">
+        {% for file in files %}
+            {% set filename_parts = file.split('/') %}
+            {% set filename = filename_parts[-1] %}
+            <li class="file-item">
+                <a href="{{ url_for('pdf_viewer_1', topic=topic, filename=file) }}" class="file-link">
+                    <div class="pdf-icon" style="background-image: url('{{ url_for('static', filename='thumbnails/'+filename+'.png') }}');"></div>
+                    {{ filename }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+</div>
+<div class="column1">
+    <h2 style="color: white; margin-bottom:5px; text-decoration: underline;">Web</h2>
+    <div class="web-urls">
+        <ul class="file-list"> 
+            {% for url in web_urls %}
+                <li class="file-item1">
+                    <a href="{{ url }}" class="file-link" target="_blank"><span class="url">{{ url }}</span></a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+</div>
+
+<footer style="text-align: center; color: white;">
+    © HeinHtet 2024. All rights reserved.
+</footer>
+
+</body>
+</html>

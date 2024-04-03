@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        
+        h2 {
+            color: #333;
+        }
+
+        .highlight {
+            background-color: yellow;
+            font-weight: bold;
+        }
+        
+        .table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .table th, .table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table th {
+            background-color: #008080;
+            color: #fff;
+        }
+
+        .table1 th {
+            background-color: #CCD1D1;
+            color: #333;
+        }
+
+        .NER {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+            margin-top: 20px;
+        }
+        
+        .NER table {
+            width: 100%;
+        }
+
+        .NER th {
+            padding: 8px;
+            text-align: center;
+            font-weight: normal;
+            color: #333;
+        }
+
+        .NER li {
+            margin: 5px 0;
+        }
+
+        .NER-link, .NER-link1, .NER-link2 {
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 10px;
+            color: #fff;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .NER-link {
+            background-color: #e91e63;
+            border: 1px solid #e91e63;
+        }
+
+        .NER-link1 {
+            background-color: #007bff;
+            border: 1px solid #007bff;
+        }
+
+        .NER-link2 {
+            background-color: #4caf50;
+            border: 1px solid #4caf50;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        a:hover {
+            color: #0056b3;
+        }
+        
+        .highlight, .NER-link:hover, .NER-link1:hover, .NER-link2:hover {
+            cursor: pointer;
+        }
+
+        .content-block {
+            padding: 10px;
+            background-color: #e91e63;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .content-block1 {
+            padding: 10px;
+            background-color: #007bff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .content-block2 {
+            padding: 10px;
+            background-color: #4caf50;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .item {
+            padding: 8px;
+            margin-bottom: 5px;
+            background-color: #ffffff;
+            border: 1px solid #000;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: background-color 0.3s ease;
+        }
+        
+        .item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .item:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .item.empty {
+            text-align: center;
+            color: #777;
+        }
+        
+    </style>
+</head>
+<body>
+    <h2 style="text-align: center; color: #008080; font-size: 36px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); text-decoration: underline;">Search Results</h2>
+    <table class="table">
+        <tr>
+            <th>Query:</th>
+            <td><div class="NER">{{ query }}</div></td>
+        </tr>
+        <tr>
+            <th>NER:</th>
+            <td>
+                <div class="NER">
+                    <table class="table1">
+                        <thead>
+                            <tr>
+                                <th><a class="NER-link">MATERIAL</a></th>
+                                <th><a class="NER-link1">PROPERTY</a></th>
+                                <th><a class="NER-link2">APPLICATION</a></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <!-- MATERIAL items here -->
+                                    <div class="content-block">
+                                        {% for mat in material %}
+                                            <div class="item">{{ mat }}</div>
+                                        {% else %}
+                                            <div class="item empty">N/A</div>
+                                        {% endfor %}
+                                    </div>
+                                </td>
+                                <td>
+                                    <!-- PROPERTY items here -->
+                                    <div class="content-block1">
+                                        {% for pro in properties %}
+                                            <div class="item">{{ pro }}</div>
+                                        {% else %}
+                                            <div class="item empty">N/A</div>
+                                        {% endfor %}
+                                    </div>
+                                </td>
+                                <td>
+                                    <!-- APPLICATION items here -->
+                                    <div class="content-block2">
+                                        {% for appli in application %}
+                                            <div class="item">{{ appli }}</div>
+                                        {% else %}
+                                            <div class="item empty">N/A</div>
+                                        {% endfor %}
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>                        
+                    </table>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th>Topic:</th>
+            <td><div class="NER">
+                {% if topic|length==1 %}
+                web data
+                {% else %}
+                {{ topic }}
+                {% endif %}
+            </div></td>
+        </tr>
+        <tr>
+            <th>File:</th>
+            <td><div class="NER"><a href="{{ url_for('pdf_viewer', filename=file_name) }}">
+                {% if file_name|length==1 %}
+                extract from web
+                {% else %}
+                {{ file_name }}
+                {% endif %}
+            </a></div></td>
+        </tr>
+        <tr>
+            <th>Most Relevant Paragraph:</th>
+            <td>
+                <div class="NER">
+                {% for word in paragraph.split() %}
+                    {% if word.lower() in query.lower().split() %}
+                        <span class="highlight">{{ word }}</span>
+                    {% else %}
+                        {{ word }}
+                    {% endif %}
+                {% endfor %}
+                </div>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

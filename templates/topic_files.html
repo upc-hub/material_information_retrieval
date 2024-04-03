@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ topic }} Files</title>
+    <style>
+        .file-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .file-item {
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        .file-link {
+            text-decoration: none;
+            color: #333;
+            display: block;
+            text-align: center;
+        }
+        .pdf-icon {
+            width: 100px;
+            height: 100px;
+            background-size: cover;
+            background-position: center;
+            margin-bottom: 5px;
+        }
+    </style>
+    <script>
+        function getThumbnailUrl(topic, filename) {
+            return `/static/thumbnails/${filename}.png`;
+        }
+    </script>
+</head>
+<body>
+    <h1>{{ topic }}'s Files</h1>
+    <ul class="file-list">
+        {% for file in files %}
+            <li class="file-item">
+                <a href="{{ url_for('pdf_viewer_1', topic=topic, filename=file) }}" class="file-link">
+                    <div class="pdf-icon" style="background-image: url('{{ url_for('static', filename='thumbnails/'+file+'.png') }}');"></div>
+                    {{ file }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
